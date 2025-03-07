@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -46,7 +46,7 @@
         </div>
         <div id="question-container"></div>
         <div class="text-center">
-            <button id="next-btn" class="btn btn-custom" onclick="nextQuestion()">Tiếp theo</button>
+            <button id="next-btn" class="btn btn-custom" onclick="nextQuestion()" disabled>Tiếp theo</button>
         </div>
     </div>
 
@@ -78,53 +78,58 @@
                     <div class="question">${question}</div>
                     <div class="answers">
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="answer" value="1">
+                            <input type="radio" class="form-check-input" name="answer" value="1" onclick="enableNextButton()">
                             <label class="form-check-label">Rất không đồng ý</label>
                         </div>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="answer" value="2">
+                            <input type="radio" class="form-check-input" name="answer" value="2" onclick="enableNextButton()">
                             <label class="form-check-label">Không đồng ý</label>
                         </div>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="answer" value="3">
+                            <input type="radio" class="form-check-input" name="answer" value="3" onclick="enableNextButton()">
                             <label class="form-check-label">Trung lập</label>
                         </div>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="answer" value="4">
+                            <input type="radio" class="form-check-input" name="answer" value="4" onclick="enableNextButton()">
                             <label class="form-check-label">Đồng ý</label>
                         </div>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="answer" value="5">
+                            <input type="radio" class="form-check-input" name="answer" value="5" onclick="enableNextButton()">
                             <label class="form-check-label">Rất đồng ý</label>
                         </div>
                     </div>
                 `;
-                document.getElementById('next-btn').disabled = true;
                 updateProgress();
             }
         }
-        
+
+        function enableNextButton() {
+            document.getElementById('next-btn').disabled = false;
+        }
+
         function nextQuestion() {
             const selectedAnswer = document.querySelector('input[name="answer"]:checked');
             if (!selectedAnswer) return alert('Vui lòng chọn câu trả lời');
             
             responses.push(selectedAnswer.value);
             currentQuestion++;
-            showQuestion();
-        }
-        
-        function updateProgress() {
-            const progress = (currentQuestion / questions.length) * 100;
-            document.getElementById('progress').style.width = progress + '%';
-            document.getElementById('progress').innerText = Math.round(progress) + '%';
-            if (currentQuestion === questions.length) {
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                // Nếu hoàn thành, chuyển sang xuất kết quả
                 document.getElementById('next-btn').innerText = 'Hoàn thành';
                 document.getElementById('next-btn').onclick = function() {
                     exportToExcel();
                 };
             }
         }
-        
+
+        function updateProgress() {
+            const progress = (currentQuestion / questions.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('progress').innerText = Math.round(progress) + '%';
+        }
+
         function exportToExcel() {
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.aoa_to_sheet([["Câu hỏi", "Đáp án"]]);
@@ -134,7 +139,7 @@
             XLSX.utils.book_append_sheet(wb, ws, "Khảo sát");
             XLSX.writeFile(wb, "KhaoSatLongTin.xlsx");
         }
-        
+
         showQuestion();
     </script>
 </body>
