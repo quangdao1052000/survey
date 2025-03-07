@@ -86,7 +86,7 @@
             </div>
           </div>
         `;
-        // Đặt lại trạng thái nút "Tiếp theo" là disabled khi hiển thị câu hỏi mới
+        // Reset trạng thái nút "Tiếp theo" khi hiển thị câu hỏi mới
         document.getElementById('next-btn').disabled = true;
         updateProgress();
       }
@@ -111,8 +111,11 @@
       if (currentQuestion < questions.length) {
         showQuestion();
       } else {
-        // Khi trả lời hết câu hỏi, thay đổi nút để xuất file Excel
+        // Khi trả lời hết các câu hỏi, chuyển nút thành "Hoàn thành"
         document.getElementById('next-btn').innerText = 'Hoàn thành';
+        // Đảm bảo nút được bật để có thể nhấn
+        document.getElementById('next-btn').disabled = false;
+        // Gán sự kiện xuất file Excel khi nhấn nút "Hoàn thành"
         document.getElementById('next-btn').onclick = function() {
           exportToExcel();
         };
