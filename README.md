@@ -128,20 +128,21 @@
       document.getElementById('progress').innerText = Math.round(progress) + '%';
     }
     
-    function exportToExcel() {
+function exportToExcel() {
   console.log("Exporting to Excel");
-  // Tạo dữ liệu dưới dạng mảng các mảng
+  // Xây dựng dữ liệu dưới dạng mảng các mảng
   let data = [["Câu hỏi", "Đáp án"]];
   questions.forEach((question, index) => {
-    data.push([question, responses[index]]);
+    data.push([question, responses[index] || ""]);
   });
   
-  // Tạo workbook và worksheet từ mảng dữ liệu
+  // Tạo workbook và chuyển đổi mảng dữ liệu thành worksheet
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.aoa_to_sheet(data);
   XLSX.utils.book_append_sheet(wb, ws, "Khảo sát");
   XLSX.writeFile(wb, "KhaoSatLongTin.xlsx");
 }
+
 
     
     // Hiển thị câu hỏi đầu tiên
