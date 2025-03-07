@@ -129,15 +129,20 @@
     }
     
     function exportToExcel() {
-      console.log("Exporting to Excel");
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.aoa_to_sheet([["Câu hỏi", "Đáp án"]]);
-      questions.forEach((question, index) => {
-        ws.push([question, responses[index]]);
-      });
-      XLSX.utils.book_append_sheet(wb, ws, "Khảo sát");
-      XLSX.writeFile(wb, "KhaoSatLongTin.xlsx");
-    }
+  console.log("Exporting to Excel");
+  // Tạo dữ liệu dưới dạng mảng các mảng
+  let data = [["Câu hỏi", "Đáp án"]];
+  questions.forEach((question, index) => {
+    data.push([question, responses[index]]);
+  });
+  
+  // Tạo workbook và worksheet từ mảng dữ liệu
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  XLSX.utils.book_append_sheet(wb, ws, "Khảo sát");
+  XLSX.writeFile(wb, "KhaoSatLongTin.xlsx");
+}
+
     
     // Hiển thị câu hỏi đầu tiên
     showQuestion();
