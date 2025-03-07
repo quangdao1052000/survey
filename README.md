@@ -113,6 +113,7 @@
             
             responses.push(selectedAnswer.value);
             currentQuestion++;
+
             if (currentQuestion < questions.length) {
                 showQuestion();
             } else {
